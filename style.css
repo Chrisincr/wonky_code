@@ -20,11 +20,11 @@ body{
   width: 100vw;
   height: 100vh;
   background-color: black;
+  text-align: center;
 }
 #world{
-  display: block;
-  width: 100%;
-  text-align: center;
+  display: inline-block;
+  text-align: left;
   margin: auto;
 }
 .row{
@@ -36,21 +36,21 @@ body{
 .vert{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-top: none;
   border-bottom: none;
 }
 .horz{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-left: none;
   border-right: none;
 }
 .up-left{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-top-left-radius: 30px;
   border-bottom: none;
   border-right: none;
@@ -58,7 +58,7 @@ body{
 .up-right{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-top-right-radius: 30px;
   border-left: none;
   border-bottom: none;
@@ -66,7 +66,7 @@ body{
 .b-left{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-bottom-left-radius: 30px;
   border-top: none;
   border-right: none;
@@ -74,7 +74,7 @@ body{
 .b-right{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-bottom-right-radius: 30px;
   border-top: none;
   border-left: none;
@@ -82,7 +82,7 @@ body{
 .close-l{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-bottom-right-radius: 30px;
   border-top-right-radius: 30px;
   border-left: none;
@@ -90,7 +90,7 @@ body{
 .close-r{
   width: 15px;
   height: 15px;
-  border: 2px blue solid;
+  border: 2px orange solid;
   border-bottom-left-radius: 30px;
   border-top-left-radius: 30px;
   border-right: none;
@@ -99,13 +99,27 @@ body{
   width: 15px;
   height: 15px;
   box-sizing: border-box;
-  padding: 7px 0 0 7px;
+  padding: 5px 0 0 6px;
+}
+.powerup-c{
+  width: 15px;
+  height: 15px;
+  box-sizing: border-box;
+  padding: 4px 0 0 6px;
 }
 .coin{
-  width: 2px;
-  height: 2px;
+  width: 4px;
+  height: 4px;
   background-color: white;
+  transform: rotate(45deg);
   animation: coin 0.4s infinite;
+}
+.powerup{
+  width: 7px;
+  height: 7px;
+  background-color: cyan;
+  transform: rotate(45deg);
+  animation: powerup 1s infinite;
 }
 .empty{
   width: 15px;
@@ -114,7 +128,7 @@ body{
 .error{
   width: 15px;
   height: 15px;
-  background-color: red;
+  background-color: orange;
 }
 #pac{
   background-image: url('https://i.gifer.com/origin/2d/2d01592d8059526d73b97de0da442368_w200.gif');
@@ -132,5 +146,19 @@ body{
   }
   100%{
     opacity: 1;
+  }
+}
+@keyframes powerup {
+  0%{
+    opacity: 1;
+    transform: rotate(45deg);
+  }
+  50%{
+    opacity: 0.7;
+    transform: rotate(90deg);
+  }
+  100%{
+    opacity: 1;
+    transform: rotate(-45deg);
   }
 }
