@@ -11,6 +11,7 @@
 	margin: 0;
   box-sizing: border-box;
   margin: 0px;
+  line-height: 0;
 }
 body{
   background-color: black;
@@ -26,6 +27,7 @@ body{
   display: inline-block;
   text-align: left;
   margin: auto;
+  background-color: #484848;
 }
 .row{
   display: block;
@@ -33,109 +35,27 @@ body{
 .piece{
   display: inline-block;
 }
-.vert{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-top: none;
-  border-bottom: none;
-}
-.horz{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-left: none;
-  border-right: none;
-}
-.up-left{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-top-left-radius: 30px;
-  border-bottom: none;
-  border-right: none;
-}
-.up-right{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-top-right-radius: 30px;
-  border-left: none;
-  border-bottom: none;
-}
-.b-left{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-bottom-left-radius: 30px;
-  border-top: none;
-  border-right: none;
-}
-.b-right{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-bottom-right-radius: 30px;
-  border-top: none;
-  border-left: none;
-}
-.close-l{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-bottom-right-radius: 30px;
-  border-top-right-radius: 30px;
-  border-left: none;
-}
-.close-r{
-  width: 15px;
-  height: 15px;
-  border: 2px orange solid;
-  border-bottom-left-radius: 30px;
-  border-top-left-radius: 30px;
-  border-right: none;
-}
-.coin-c{
-  width: 15px;
-  height: 15px;
-  box-sizing: border-box;
-  padding: 5px 0 0 6px;
-}
-.powerup-c{
-  width: 15px;
-  height: 15px;
-  box-sizing: border-box;
-  padding: 4px 0 0 6px;
-}
-.coin{
-  width: 4px;
-  height: 4px;
-  background-color: white;
-  transform: rotate(45deg);
-  animation: coin 0.4s infinite;
-}
-.powerup{
-  width: 7px;
-  height: 7px;
-  background-color: cyan;
-  transform: rotate(45deg);
-  animation: powerup 1s infinite;
-}
 .empty{
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
 }
-.error{
-  width: 15px;
-  height: 15px;
-  background-color: orange;
+.block{
+  width: 10px;
+  height: 10px;
+  background-color: #4d9900;
+  border: 1px solid #4848480f;
 }
-#pac{
-  background-image: url('https://i.gifer.com/origin/2d/2d01592d8059526d73b97de0da442368_w200.gif');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-size: 13px 13px;
-  background-position: center;
+.block2{
+  width: 10px;
+  height: 10px;
+  background-color: #585858;
+  border: 1px solid #4848480f;
+}
+.block3{
+  width: 10px;
+  height: 10px;
+  background-color: grey;
+  border: 1px solid #4848480f;
 }
 @keyframes coin {
   0%{

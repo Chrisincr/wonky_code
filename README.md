@@ -1,6 +1,6 @@
-# Simple Pac-Man Game
+# Convolution
 
-A simple Pacman game I made in HTML, CSS and JS. Cuz bored.
+A simple thing I made in HTML, CSS and JS. Cuz bored.
 
 ## Download
 ```bash

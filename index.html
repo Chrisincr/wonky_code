@@ -3,129 +3,195 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="./style.css">
-    <title>PacMan</title>
+    <title>Pathfinder</title>
   </head>
-  <body onload="renderWorld(10,30)">
+  <body onload="renderWorld(40,40)">
     <div id="w-cont">
       <div id="world"></div>
     </div>
     <script type="text/javascript">
-      // var raw = [
-      //   [1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,3],
-      //   [5,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,5],
-      //   [5,9,1,6,6,3,9,1,6,6,6,6,6,6,3,9,8,6,6,6,6,6,6,7,0,1,3,9,8,6,7,9,8,7,9,5],
-      //   [5,9,2,6,6,4,9,5,0,0,0,0,0,0,5,9,0,0,0,0,0,0,0,0,0,5,5,9,9,9,9,9,9,9,9,5],
-      //   [5,9,9,9,9,9,9,5,0,1,6,6,6,6,4,0,1,0,0,0,0,0,0,3,0,5,5,9,1,6,6,6,6,3,9,5],
-      //   [2,6,6,6,6,3,9,5,0,5,9,9,9,9,9,0,5,0,0,0,0,0,0,5,0,5,5,9,5,0,0,0,0,5,9,5],
-      //   [0,0,0,0,0,5,9,5,0,5,9,1,6,6,3,0,5,0,0,0,0,0,0,5,0,5,5,9,2,6,6,6,6,4,9,5],
-      //   [8,6,6,6,6,4,9,5,0,5,9,5,0,0,5,0,2,6,6,6,6,6,6,4,0,5,5,9,9,9,9,9,9,9,9,5],
-      //   [0,0,0,0,0,0,9,5,0,5,9,2,6,3,5,0,0,0,0,0,0,0,0,0,0,5,5,9,1,6,6,6,6,3,9,5],
-      //   [8,6,6,6,6,3,9,5,0,5,9,9,9,5,5,9,8,6,6,6,6,6,6,7,9,5,5,9,5,0,0,0,0,5,9,5],
-      //   [0,0,0,0,0,5,9,5,0,2,6,6,6,4,5,9,9,9,9,9,9,9,9,9,9,5,5,9,5,0,0,0,0,5,9,5],
-      //   [1,6,6,6,6,4,9,2,6,6,6,6,6,6,4,9,8,6,6,7,9,1,3,9,1,4,5,9,2,6,6,6,6,4,9,5],
-      //   [5,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,5,5,9,5,0,5,9,9,9,9,9,9,9,9,5],
-      //   [5,9,8,6,6,6,7,9,8,6,6,6,6,6,6,6,6,6,6,7,9,5,5,9,2,6,4,9,8,6,6,6,6,7,9,5],
-      //   [5,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,5,5,42,9,9,9,9,9,9,9,9,9,9,9,5],
-      //   [2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4]
-      // ]
-      var render_space = document.getElementById('world');
+    var render_space = document.getElementById('world');
 
-      function oneOr(num) {
-        return Math.floor(Math.random() * num);
+    function worldGen(w, h) {
+      //variable initialization
+      var worldRaw = [];
+      var w = 2 * Math.floor(w / 2);
+      var h = 2 * Math.floor(h / 2);
+      var prob = function(n) {
+          return !!n && Math.random() <= n;
+      };
+
+      //creates empty worldRaw
+      //top
+      worldRaw.push([3]);
+      for (var j = 0; j <= (w - 2); j++) {
+          worldRaw[0].push(1);
       }
-      function slightchance(num) {
-        return Math.floor(Math.random() * (Math.random() * num));
-      }
-
-      function world_gen(w, h){
-        w *= 4;
-        // 1 Column = 4 Units
-        var op = [];
-        var prevnum = false;
-        //Top
-        op.push([1]);
-        for (var i = 0; i < w-2; i++) {op[0].push(6);}
-        op[0].push(3);
-
-        // Column 1
-        for(var f = 1; f <= h-1; f++){
-          var rand1 = slightchance(2);
-          if((rand1 == 1 && !prevnum) && ((h - f) > 10 ) && (f > 3)){
-            op.push([5,9,2,6]);
-            op.push([5,9,9,9]);
-            op.push([2,6,3,9]);
-            op.push([0,0,5,9]);
-            op.push([0,0,5,9]);
-            op.push([0,0,5,9]);
-            op.push([1,6,4,9]);
-            op.push([5,9,9,9]);
-            op.push([5,9,1,6]);
-            prevnum = true;
-            f+=8;
+      worldRaw[0].push(4);
+      //middle
+      for (var j = 1; j <= h - 1; j++) {
+          worldRaw.push([2]);
+          for (var r = 0; r < (w - 1); r++) {
+              worldRaw[j].push(0)
           }
-          else if (((h - f) > 3) && (f > 3)){
-            switch (slightchance(2)) {
-              case 1:
-                op.push([5,9,5,0]);
-                op.push([5,9,2,6]);
-                op.push([5,9,9,9]);
-                op.push([5,9,1,6]);
-                op.push([5,9,5,0]);
-                f+=4;
-                break;
-              default:
-                op.push([5,9,5,0]);
+          worldRaw[j].push(2);
+      }
+      //bottom
+      worldRaw.push([6]);
+      for (var j = 0; j <= (w - 2); j++) {
+          worldRaw[worldRaw.length - 1].push(1);
+      }
+      worldRaw[worldRaw.length - 1].push(5);
+
+      //time for pathmaking
+      //get initial point ready
+      worldRaw[Math.floor(w / 2)][0] = 7;
+      for (var i = 0; i <= h; i++) {
+          for (var j = 0; j <= w; j++) {
+              if (worldRaw[i][j] == 7) {
+                  worldRaw[i][j] = 2;
+                  worldRaw[i][j + 1] = 7
+              }
+          }
+      }
+      //extend h to side and add junction points
+      for (var i = 0; i <= h; i++) {
+          var exp = 0;
+          for (var j = 0; j <= w; j++) {
+              if ((worldRaw[i][j] == 7) &&
+                  (worldRaw[i][j + 1] != 7) &&
+                  (worldRaw[i][j + 1] != 2)) {
+                  worldRaw[i][j + 1] = 7;
+                  if ((prob(0.15 * (1 + (Math.E ^ exp)))) && (worldRaw[i][j - 1] == 7)) {
+                      exp = 0;
+                      worldRaw[i][j] = 't';
+                  }
+              }
+              exp += 1;
+          }
+      }
+
+      //extend v lines from junctions
+      for (var i = 1; i <= (h - 1); i++) {
+          for (var j = 0; j <= w; j++) {
+              if (((worldRaw[i + 1][j] == 7) || (worldRaw[i - 1][j] == 7)) &&
+                  (worldRaw[i + 1][j] != 1 && worldRaw[i - 1][j] != 1)
+              ) {
+                  worldRaw[i][j] = 7;
+                  worldRaw[i + 1][j] = 7;
+              } else if (worldRaw[i][j] == 't') {
+                  worldRaw[i + 1][j] = 7;
+              }
+          }
+      }
+      for (var i = (worldRaw.length - 2); i > 1; i--) {
+          for (var j = 0; j <= w; j++) {
+              if ((worldRaw[i + 1][j] == 7) && (worldRaw[i + 1][j] != 1)) {
+                  worldRaw[i][j] = 7;
+                  worldRaw[i - 1][j] = 7;
+              } else if (worldRaw[i][j] == 't') {
+                  worldRaw[i - 1][j] = 7;
+                  worldRaw[i + 1][j] = 7;
+              }
+          }
+      }
+
+      //sprout new junctions from verticals
+      for (var i = 1; i <= (h - 1); i++) {
+          for (j in worldRaw[i]) {
+              if ((prob(0.015 * (1 + (Math.E ^ exp)))) && (worldRaw[i][j] == 7) &&
+                  ((worldRaw[i - 1][j] != 1) && (worldRaw[i + 1][j] != 1)) &&
+                  ((worldRaw[i][j - 1] != 8) && (worldRaw[i][j + 1] != 8))) {
+                  worldRaw[i][j] = 't';
+                  exp = 0;
+              }
+          }
+          exp += 1;
+      }
+
+      //fill in tertiary lines
+      for (var i = 1; i <= (h - 1); i++) {
+        if (worldRaw[i].includes('t')) {
+          for (j in worldRaw[i]) {
+            if (worldRaw[i][j] == 0) {
+              worldRaw[i][j] = 7;
             }
-          }
-          else{
-            op.push([5,11,11,11]);
+            else if(worldRaw[i][j] == 't' &&
+            ((worldRaw[i - 1][j] != 1) && (worldRaw[i + 1][j] != 1)) &&
+            ((worldRaw[i][j + 1] != 2) && (worldRaw[i][j - 1] != 2))){
+              worldRaw[i][j] = 7;
+              worldRaw[i+1][j] = 7;
+              worldRaw[i-1][j] = 7;
+              worldRaw[i][j+1] = 7;
+              worldRaw[i][j-1] = 7;
+              worldRaw[i+1][j-1] = 7;
+              worldRaw[i-1][j-1] = 7;
+              worldRaw[i+1][j+1] = 7;
+              worldRaw[i-1][j+1] = 7;
+              j -= 1;
+            }
           }
         }
+      }
 
-        //Second Column
-        if (w>1) {
-          for (var f = 1; f <= h-1; f++) {
-            if((op[f][3] == 6) &&
-            (op[f-4][7] == undefined) &&
-            (op[f-3][7] == undefined) &&
-            (op[f-2][7] == undefined) &&
-            (op[f-2][2] != 4)){
-              op[f].push(6,4,9,2);
-              op[f-1].push(6,3,9,5);
-              op[f-1][3] = 2;
-              op[f-2][3] = 5;
-              op[f-3][3] = 5;
-              op[f-3][3] = 1;
-              op[f-3].push(6,6,6,3)
-              op[f-2].push(42,9,9,5)
+      exp = 0;
+      for (var i = 1; i <= (h - 1); i++) {
+          for (var j = 1; j <= (w-1); j++){
+            if ((prob(0.245 * (1 + (Math.E ^ exp))))) {
+              exp = 0;
+              worldRaw[i][j] = 7;
             }
-            else if ((op[f][3] == 6)) {
-              op[f].push(6,6,6,6);
+            else{
+              worldRaw[i][j] = 0;
             }
-            else if(op[f][3] ==11){
-              op[f].push(12,12,12,12);
+            exp++;
+          }
+      }
+
+      // shave columns
+      for(i in worldRaw){
+        if (worldRaw[i].length > w) {
+          worldRaw[i].pop();
+        }
+      }
+
+      //topo
+      for(i in worldRaw){
+        console.log('-> '+i);
+        console.log('-> '+worldRaw.length);
+        for(j in worldRaw[i]){
+          if (worldRaw[i][j] == 0) {
+            if(worldRaw[i-1] != undefined){
+              worldRaw[i-1][j] = 8;
             }
-            else if((op[f][3] == 9) && (op[f+1][3] != 9) && (op[f-1][2] != 4)){
-              op[f].push(9,9,9,9);
+            if(i < worldRaw.length){
+              worldRaw[i][j] = 8;
+            }
+            if(worldRaw[i][j+1] != undefined){
+              worldRaw[i][j+1] = 8;
+            }
+            if(worldRaw[i][j-1] != undefined){
+              worldRaw[i][j-1] = 8;
             }
           }
         }
-
-
-        //Bottom
-        var opb = [];
-        opb.push(2);
-        for (var i = 0; i < w-2; i++) {opb.push(6);}
-        opb.push(4);
-        op[h] = opb;
-
-        //End
-        return op;
-
       }
 
-      function renderWorld(w,h){
-        var raw = world_gen(w,h);
+      //end and return
+
+      for(i in worldRaw){
+        for(j in worldRaw[i]){
+          if(i == 0 || i == worldRaw.length-1 || j == 0 || j == w-1){
+            worldRaw[i][j] = 7;
+          }
+        }
+      }
+
+      console.log(worldRaw);
+      return worldRaw;
+    }
+    function renderWorld(w,h){
+        var raw = worldGen(w,h);
         var op = '';
         for(i in raw){
           op += '<div class="row">';
@@ -134,41 +200,16 @@
               case 0:
                 op += '<div class="piece empty"></div>';
                 break;
-              case 1:
-                op += '<div class="piece up-left"></div>';
-                break;
-              case 2:
-                op += '<div class="piece b-left"></div>';
-                break;
-              case 3:
-                op += '<div class="piece up-right"></div>';
-                break;
-              case 4:
-                op += '<div class="piece b-right"></div>';
-                break;
-              case 5:
-                op += '<div class="piece vert"></div>';
-                break;
-              case 6:
-                op += '<div class="piece horz"></div>';
-                break;
               case 7:
-                op += '<div class="piece close-l"></div>';
+                op += '<div class="piece block"></div>';
                 break;
               case 8:
-                op += '<div class="piece close-r"></div>';
+                op += '<div class="piece block2"></div>';
                 break;
-              case 9:
-                op += '<div class="piece coin-c"><div class="coin"></div></div>';
-                break;
-              case 10:
-                op+= '<div class="piece empty" id="pac"></div>'
-                break;
-              case 42:
-                op += '<div class="piece powerup-c"><div class="powerup"></div></div>'
+              case 7:
+                op += '<div class="piece block3"></div>';
                 break;
               default:
-                op += '<div class="piece error"></div>';
                 break;
             }
           }
